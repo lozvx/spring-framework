@@ -49,6 +49,7 @@ import org.springframework.transaction.PlatformTransactionManager;
  * @see org.springframework.aop.framework.ProxyFactory
  */
 @SuppressWarnings("serial")
+// 事务拦截器 AOP，实现MethodInterceptor
 public class TransactionInterceptor extends TransactionAspectSupport implements MethodInterceptor, Serializable {
 
 	/**

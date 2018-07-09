@@ -61,6 +61,7 @@ import org.springframework.util.ClassUtils;
  * @see AdvisedSupport
  * @see ProxyFactory
  */
+// AOP 基于JDK动态代理
 final class JdkDynamicAopProxy implements AopProxy, InvocationHandler, Serializable {
 
 	/** use serialVersionUID from Spring 1.2 for interoperability */
@@ -151,6 +152,7 @@ final class JdkDynamicAopProxy implements AopProxy, InvocationHandler, Serializa
 	 * <p>Callers will see exactly the exception thrown by the target,
 	 * unless a hook method throws an exception.
 	 */
+	//InvocationHandler invoke 方法实现
 	@Override
 	@Nullable
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
@@ -194,19 +196,23 @@ final class JdkDynamicAopProxy implements AopProxy, InvocationHandler, Serializa
 			Class<?> targetClass = (target != null ? target.getClass() : null);
 
 			// Get the interception chain for this method.
+			// 获得这个方法的所有拦截器
 			List<Object> chain = this.advised.getInterceptorsAndDynamicInterceptionAdvice(method, targetClass);
 
 			// Check whether we have any advice. If we don't, we can fallback on direct
 			// reflective invocation of the target, and avoid creating a MethodInvocation.
+			//如果没有拦截器，直接调用目标对象的方法
 			if (chain.isEmpty()) {
 				// We can skip creating a MethodInvocation: just invoke the target directly
 				// Note that the final invoker must be an InvokerInterceptor so we know it does
 				// nothing but a reflective operation on the target, and no hot swapping or fancy proxying.
 				Object[] argsToUse = AopProxyUtils.adaptArgumentsIfNecessary(method, args);
+				// 直接调用invoke
 				retVal = AopUtils.invokeJoinpointUsingReflection(target, method, argsToUse);
 			}
 			else {
 				// We need to create a method invocation...
+				// 创建ReflectiveMethodInvocation，
 				invocation = new ReflectiveMethodInvocation(proxy, target, method, args, targetClass, chain);
 				// Proceed to the joinpoint through the interceptor chain.
 				retVal = invocation.proceed();

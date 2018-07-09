@@ -50,6 +50,7 @@ import org.springframework.util.Assert;
  * @see ClassPathBeanDefinitionScanner
  * @see org.springframework.context.support.GenericXmlApplicationContext
  */
+//基于注解的ApplicationContext
 public class AnnotationConfigApplicationContext extends GenericApplicationContext implements AnnotationConfigRegistry {
 
 	private final AnnotatedBeanDefinitionReader reader;
@@ -93,8 +94,10 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	 * in the given packages and automatically refreshing the context.
 	 * @param basePackages the packages to check for annotated classes
 	 */
+	//基于注解的ApplicationContext
 	public AnnotationConfigApplicationContext(String... basePackages) {
 		this();
+		//扫描包
 		scan(basePackages);
 		refresh();
 	}

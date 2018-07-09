@@ -29,6 +29,7 @@ import org.springframework.lang.Nullable;
  * @author Juergen Hoeller
  * @see DefaultAopProxyFactory
  */
+// Proxy 接口，有JDKProxy 和CglibProxy 两个实现
 public interface AopProxy {
 
 	/**

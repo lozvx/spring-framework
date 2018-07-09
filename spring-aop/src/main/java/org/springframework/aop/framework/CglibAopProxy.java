@@ -81,6 +81,7 @@ import org.springframework.util.ObjectUtils;
  * @see DefaultAopProxyFactory
  */
 @SuppressWarnings("serial")
+// AOP 基于Cglib动态代理
 class CglibAopProxy implements AopProxy, Serializable {
 
 	// Constants for CGLIB callback array indices
