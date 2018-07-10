@@ -521,9 +521,11 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			prepareRefresh();
 
 			// Tell the subclass to refresh the internal bean factory.
+			// 创建BeanFactory
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
 
 			// Prepare the bean factory for use in this context.
+			// 准备BeanFactory，设置一些参数什么的
 			prepareBeanFactory(beanFactory);
 
 			try {
@@ -531,27 +533,36 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				postProcessBeanFactory(beanFactory);
 
 				// Invoke factory processors registered as beans in the context.
+				// BeanFactoryPostProcessor是回调接口 子类可以通过实现该接口来执行某些操作，这里是所有的 Bean 都加载、注册完成了，但是都还没有初始化的时候。
+				// 参考 https://blog.csdn.net/elim168/article/details/76168514
 				invokeBeanFactoryPostProcessors(beanFactory);
 
 				// Register bean processors that intercept bean creation.
+				// 注册BeanPostProcessor 回调接口，里面的两个方法分别是在Bean 初始化之前和初始化之后得到执行
 				registerBeanPostProcessors(beanFactory);
 
 				// Initialize message source for this context.
+				// MessageSource 国际化
 				initMessageSource();
 
 				// Initialize event multicaster for this context.
+				// 事件广播
 				initApplicationEventMulticaster();
 
 				// Initialize other special beans in specific context subclasses.
+				// 子类实现
 				onRefresh();
 
 				// Check for listener beans and register them.
+				// 注册监听器，ApplicationListener接口的实现
 				registerListeners();
 
 				// Instantiate all remaining (non-lazy-init) singletons.
+				// 重点 初始化所有非懒加载，单例的Bean
 				finishBeanFactoryInitialization(beanFactory);
 
 				// Last step: publish corresponding event.
+				// 广播ApplicationContext初始化完成的事件
 				finishRefresh();
 			}
 
@@ -869,6 +880,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		beanFactory.freezeConfiguration();
 
 		// Instantiate all remaining (non-lazy-init) singletons.
+		// 预先实例化非懒加载且单例的Bean
 		beanFactory.preInstantiateSingletons();
 	}
 

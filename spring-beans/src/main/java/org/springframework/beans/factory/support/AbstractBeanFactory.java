@@ -311,7 +311,9 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				}
 
 				// Create bean instance.
-				if (mbd.isSingleton()) {
+				// 创建实例
+				if (mbd.isSingleton()) {//单例
+					//匿名内部类
 					sharedInstance = getSingleton(beanName, () -> {
 						try {
 							return createBean(beanName, mbd, args);
@@ -327,7 +329,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 					bean = getObjectForBeanInstance(sharedInstance, name, beanName, mbd);
 				}
 
-				else if (mbd.isPrototype()) {
+				else if (mbd.isPrototype()) {//原型
 					// It's a prototype -> create a new instance.
 					Object prototypeInstance = null;
 					try {
@@ -340,7 +342,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 					bean = getObjectForBeanInstance(prototypeInstance, name, beanName, mbd);
 				}
 
-				else {
+				else {// 其它
 					String scopeName = mbd.getScope();
 					final Scope scope = this.scopes.get(scopeName);
 					if (scope == null) {

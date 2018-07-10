@@ -207,6 +207,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	 */
 	public Object getSingleton(String beanName, ObjectFactory<?> singletonFactory) {
 		Assert.notNull(beanName, "Bean name must not be null");
+		// 加锁，同步操作
 		synchronized (this.singletonObjects) {
 			Object singletonObject = this.singletonObjects.get(beanName);
 			if (singletonObject == null) {
@@ -225,6 +226,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 					this.suppressedExceptions = new LinkedHashSet<>();
 				}
 				try {
+					// 此处的getObject 调用的是匿名内部类的方法实现
 					singletonObject = singletonFactory.getObject();
 					newSingleton = true;
 				}

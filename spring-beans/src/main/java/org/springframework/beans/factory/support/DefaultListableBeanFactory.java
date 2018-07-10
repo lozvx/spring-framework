@@ -156,6 +156,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	private final Map<Class<?>, Object> resolvableDependencies = new ConcurrentHashMap<>(16);
 
 	/** Map of bean definition objects, keyed by bean name */
+	// 保存类定义的内部存储，ConcurrentHashMap
 	private final Map<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<>(256);
 
 	/** Map of singleton and non-singleton bean names, keyed by dependency type */
@@ -736,6 +737,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 		// Trigger initialization of all non-lazy singleton beans...
 		for (String beanName : beanNames) {
 			RootBeanDefinition bd = getMergedLocalBeanDefinition(beanName);
+			// 非抽象，单例，非懒加载
 			if (!bd.isAbstract() && bd.isSingleton() && !bd.isLazyInit()) {
 				if (isFactoryBean(beanName)) {
 					Object bean = getBean(FACTORY_BEAN_PREFIX + beanName);
@@ -757,6 +759,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 					}
 				}
 				else {
+					// 通过调用getBean，实例化bean
 					getBean(beanName);
 				}
 			}
